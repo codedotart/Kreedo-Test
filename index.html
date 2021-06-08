@@ -50,6 +50,9 @@
       var fullscreenButton = document.querySelector("#unity-fullscreen-button");
       var mobileWarning = document.querySelector("#unity-mobile-warning");
 
+      //CDA
+      var gameInstance;
+
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
         container.className = "unity-mobile";
         config.devicePixelRatio = 1;
@@ -72,6 +75,7 @@
           loadingBar.style.display = "none";
           fullscreenButton.onclick = () => {
             unityInstance.SetFullscreen(1);
+            gameInstance = unityInstance;
           };
         }).catch((message) => {
           alert(message);
@@ -100,7 +104,7 @@
 
       function SendDataToUnity(data) {
    // Don't change this line.
-   unityInstance.SendMessage("GetData","ReceiveData",data);
+   gameInstance.SendMessage("GetData","ReceiveData",data);
  }
 
       document.addEventListener("message", handleEvent);
