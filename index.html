@@ -72,10 +72,10 @@
         createUnityInstance(canvas, config, (progress) => {
           progressBarFull.style.width = 100 * progress + "%";
         }).then((unityInstance) => {
+          gameInstance = unityInstance;
           loadingBar.style.display = "none";
           fullscreenButton.onclick = () => {
             unityInstance.SetFullscreen(1);
-            gameInstance = unityInstance;
           };
         }).catch((message) => {
           alert(message);
@@ -103,8 +103,9 @@
       }
 
       function SendDataToUnity(data) {
+        message = JSON.stringify(data);
    // Don't change this line.
-   gameInstance.SendMessage("GetData","ReceiveData",data);
+   gameInstance.SendMessage("GetData","ReceiveData",message);
  }
 
       document.addEventListener("message", handleEvent);
