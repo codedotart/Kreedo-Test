@@ -25,6 +25,11 @@
         <div id="unity-build-title">Kreedo Data Test</div>
       </div>
     </div>
+
+    <button onclick="SendDataToUnity("Test Data")">Click me</button>
+
+
+
     <script>
       var buildUrl = "Build";
       var loaderUrl = buildUrl + "/Web Build.loader.js";
@@ -75,48 +80,7 @@
       document.body.appendChild(script);
 
 
-      var gameInstance = UnityLoader.instantiate("gameContainer", "Build/Build.json", {onProgress: function(gameInstance, progress)
-{
 
-  if (!gameInstance.Module)
-    return;
-
-  //Get the preloader element
-  const preLoader = document.querySelector(".pre-loader");
-  //Get the progressbar fill element
-  const progressBar = preLoader.querySelector(".progress-bar .fill");
-
-  if (!gameInstance.progress)
-  {
-    //Show the progress fill
-    preLoader.style.display = "flex";
-    //Assign to use the progress bar fill
-    gameInstance.progress = progressBar;
-  }
-
-  //Update the fill element width by progress
-  gameInstance.progress.textContent =gameInstance.progress.style.width =(100 * progress) + "%";
-
-  //If unity finished loading
-  if (progress === 1 && !gameInstance.removeTimeout)
-  {
-    //Hide the preloader with a delay
-    gameInstance.removeTimeout = setTimeout(function()
-    {
-      //Hide the preloader
-      preLoader.style.display = "none"
-      // const url_string =window.location.href;
-      // const url = new URL(url_string);
-      // const jsonStr = url.searchParams.get("json");
-      //console.log("json string::",jsonStr);
-      SendDataToUnity(messageData);
-    }, 500);
-  }
-}});
-
-
-// Added by UBS team
-var messageData;
 
       function GetDataFromUnity( arg )
       {
@@ -136,7 +100,7 @@ var messageData;
 
       function SendDataToUnity(data) {
    // Don't change this line.
-   gameInstance.SendMessage("GetData","ReceiveData",data);
+   unityInstance.SendMessage("GetData","ReceiveData",data);
  }
 
       document.addEventListener("message", handleEvent);
