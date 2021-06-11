@@ -50,7 +50,7 @@
       var fullscreenButton = document.querySelector("#unity-fullscreen-button");
       var mobileWarning = document.querySelector("#unity-mobile-warning");
 
-      //CDA
+      //CDA: gameInstance variable which will be used to call Unity Instance
       var gameInstance;
 
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
@@ -72,8 +72,10 @@
         createUnityInstance(canvas, config, (progress) => {
           progressBarFull.style.width = 100 * progress + "%";
         }).then((unityInstance) => {
+          //CDA: Assigning gameInstance variable
           gameInstance = unityInstance;
-          SendDataToUnity("Test");
+          //CDA: Calling the function to send data to Unity
+          SendDataToUnity(messageData);
           loadingBar.style.display = "none";
           fullscreenButton.onclick = () => {
             unityInstance.SetFullscreen(1);
@@ -86,28 +88,33 @@
 
 
 
+      //CDA: Getting Data From Unity
+  //    function GetDataFromUnity( arg )
+  //    {
+	//	  console.log("called ", arg);
+	//	  if (window && window.ReactNativeWebView) {
+	//		window.ReactNativeWebView.postMessage(arg)
+	//	  }
+  //        alert( Pointer_stringify(arg) );
+  //    }
 
-      function GetDataFromUnity( arg )
-      {
-		  console.log("called ", arg);
-		  if (window && window.ReactNativeWebView) {
-			window.ReactNativeWebView.postMessage(arg)
-		  }
-          alert( Pointer_stringify(arg) );
-      }
 
-      var messageData;
+      // Added by UBS team
+	     var messageData;
 
-      function handleEvent(message) {
+
+
+      //CDA: Sending data to Unity
+      function SendDataToUnity(data) {
+
+        // Don't change this line.
+        gameInstance.SendMessage("GetData","ReceiveData",data);
+        }
+
+        function handleEvent(message) {
           messageData = JSON.stringify(message.data);
 		 // SendDataToUnity(message.data);
       }
-
-      function SendDataToUnity(data) {
-        message = JSON.stringify(data);
-   // Don't change this line.
-   gameInstance.SendMessage("GetData","ReceiveData",message);
- }
 
       document.addEventListener("message", handleEvent);
 
